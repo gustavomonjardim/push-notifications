@@ -1,4 +1,9 @@
+import { urlB64ToUint8Array } from './utils.js';
+
 const pushButton = document.querySelector('.push-button');
+
+const PUBLIC_KEY =
+  'BDw0pzvsRvUjhaCCxVJaIUlTfkZLBjeKAzMnz1m1It6gVoYhfMeQXggIM6pHqredieWHAh8mgenmVY-uM6O92GQ';
 
 let isSubscribed = false;
 let swRegistration = null;
@@ -40,9 +45,22 @@ function updateBtn() {
   pushButton.disabled = false;
 }
 
-function subscribeUser() {
-  isSubscribed = true;
-  updateBtn();
+async function subscribeUser() {
+  const SERVER_KEY = urlB64ToUint8Array(PUBLIC_KEY);
+
+  try {
+    const subscription = await swRegistration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: SERVER_KEY,
+    });
+
+    console.log('User is subscribed: ', JSON.stringify(subscription));
+    isSubscribed = true;
+  } catch (err) {
+    console.log('Failed to subscribe the user: ', err);
+  } finally {
+    updateBtn();
+  }
 }
 
 function unsubscribeUser() {
@@ -52,7 +70,7 @@ function unsubscribeUser() {
 
 async function registerServiceWorker() {
   try {
-    const swReg = await navigator.serviceWorker.register('sw.js');
+    const swReg = await navigator.serviceWorker.register('serviceWorker.js');
 
     console.log('Service Worker is registered', swReg);
 
