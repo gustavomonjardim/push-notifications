@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "servor . index.html 8080 --reload --browse",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gustavo Monjardim",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "servor": "^3.2.0"
+  }
 }
