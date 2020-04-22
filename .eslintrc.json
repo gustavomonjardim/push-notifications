@@ -1,0 +1,49 @@
+{
+  "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "es6": true
+    },
+    "plugins": ["import-helpers"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:prettier/recommended"
+    ],
+    "globals": {
+      "__PATH_PREFIX__": true,
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly",
+      "__DEV__": true,
+      "process": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "rules": {
+      "import/prefer-default-export": "off",
+      "import/no-extraneous-dependencies": [
+        "error",
+        { "devDependencies": true }
+      ],
+      "import-helpers/order-imports": [
+        "warn",
+        {
+          "newlinesBetween": "always",
+          "groups": [
+            "module",
+            ["parent", "/^~/"],
+            ["sibling", "index"]
+          ],
+          "alphabetize": { "order": "asc", "ignoreCase": true }
+        }
+      ],
+      "no-underscore-dangle": ["error", { "allow": ["__typename"] }],
+      "no-console": "off",
+      "no-use-before-define": ["error", { "functions": false }],
+      "global-require": "off"
+    },
+    "ignorePatterns": ["node_modules/"]
+  }
