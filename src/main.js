@@ -1,6 +1,7 @@
 const pushButton = document.querySelector('.push-button');
 
 let isSubscribed = false;
+let swRegistration = null;
 
 function initializeUI() {
   pushButton.addEventListener('click', () => {
@@ -37,4 +38,20 @@ function unsubscribeUser() {
   updateBtn();
 }
 
-initializeUI();
+async function registerServiceWorker() {
+  try {
+    const swReg = await navigator.serviceWorker.register('sw.js');
+
+    console.log('Service Worker is registered', swReg);
+
+    swRegistration = swReg;
+    initializeUI();
+  } catch (err) {
+    console.error('Service Worker Error', err);
+  }
+}
+
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+  console.log('Service Worker and Push is supported');
+  registerServiceWorker();
+}
