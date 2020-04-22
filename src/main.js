@@ -3,7 +3,7 @@ const pushButton = document.querySelector('.push-button');
 let isSubscribed = false;
 let swRegistration = null;
 
-function initializeUI() {
+async function initializeUI() {
   pushButton.addEventListener('click', () => {
     pushButton.disabled = true;
     if (isSubscribed) {
@@ -12,6 +12,18 @@ function initializeUI() {
       subscribeUser();
     }
   });
+
+  const subscription = await swRegistration.pushManager.getSubscription();
+
+  isSubscribed = !(subscription === null);
+
+  if (isSubscribed) {
+    console.log('User IS subscribed.');
+  } else {
+    console.log('User is NOT subscribed.');
+  }
+
+  updateBtn();
 }
 
 function updateBtn() {
