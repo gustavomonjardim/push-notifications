@@ -7,6 +7,7 @@ const PUBLIC_KEY =
 
 let isSubscribed = false;
 let swRegistration = null;
+let subscription = null;
 
 async function initializeUI() {
   pushButton.addEventListener('click', () => {
@@ -18,16 +19,8 @@ async function initializeUI() {
     }
   });
 
-  const subscription = await swRegistration.pushManager.getSubscription();
-
+  subscription = await swRegistration.pushManager.getSubscription();
   isSubscribed = !(subscription === null);
-
-  if (isSubscribed) {
-    console.log('User IS subscribed.');
-  } else {
-    console.log('User is NOT subscribed.');
-  }
-
   updateBtn();
 }
 
@@ -49,23 +42,30 @@ async function subscribeUser() {
   const SERVER_KEY = urlB64ToUint8Array(PUBLIC_KEY);
 
   try {
-    const subscription = await swRegistration.pushManager.subscribe({
+    subscription = await swRegistration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: SERVER_KEY,
     });
 
     console.log('User is subscribed: ', JSON.stringify(subscription));
     isSubscribed = true;
+    updateBtn();
   } catch (err) {
     console.log('Failed to subscribe the user: ', err);
-  } finally {
-    updateBtn();
   }
 }
 
-function unsubscribeUser() {
-  isSubscribed = false;
-  updateBtn();
+async function unsubscribeUser() {
+  try {
+    await subscription.unsubscribe();
+
+    console.log('User is unsubscribed.');
+    isSubscribed = false;
+    subscription = null;
+    updateBtn();
+  } catch (err) {
+    console.log('Error unsubscribing', err);
+  }
 }
 
 async function registerServiceWorker() {
@@ -73,7 +73,6 @@ async function registerServiceWorker() {
     const swReg = await navigator.serviceWorker.register('serviceWorker.js');
 
     console.log('Service Worker is registered', swReg);
-
     swRegistration = swReg;
     initializeUI();
   } catch (err) {
