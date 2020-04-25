@@ -4,7 +4,7 @@ const pushButton = document.querySelector('.push-button');
 const sendButton = document.querySelector('.send-button');
 const notificationContent = document.querySelector('.notification-content');
 
-const PUBLIC_KEY =
+const VAPID_PUBLIC_KEY =
   'BBbjYjIayKHSY4WQpQApYNLzuM4CtobiT-rYFPcRHqglL91yAq2PgaODn5MbtE0dCmGD7zQRfoaB4J6y0LytA9s';
 
 let isSubscribed = false;
@@ -48,12 +48,10 @@ function updateUI() {
 }
 
 async function subscribeUser() {
-  const SERVER_KEY = urlB64ToUint8Array(PUBLIC_KEY);
-
   try {
     subscription = await swRegistration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: SERVER_KEY,
+      applicationServerKey: urlB64ToUint8Array(VAPID_PUBLIC_KEY),
     });
 
     console.log('User is subscribed: ', JSON.stringify(subscription));

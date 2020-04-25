@@ -6,12 +6,12 @@ require('dotenv').config({
 
 webPush.setVapidDetails(
   'https://serviceworke.rs/',
-  process.env.PUBLIC_KEY,
-  process.env.PRIVATE_KEY
+  process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
 );
 
 export async function handler(event) {
-  if (!process.env.PUBLIC_KEY || !process.env.PRIVATE_KEY) {
+  if (!process.env.VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY) {
     console.log(
       'You must set the VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY environment variables. You can use the following ones:',
       webPush.generateVAPIDKeys()
