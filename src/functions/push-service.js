@@ -25,7 +25,7 @@ export async function handler(event) {
   try {
     const subscription = JSON.parse(event.body);
 
-    await webPush.sendNotification(subscription);
+    await webPush.sendNotification(subscription, 'TESTE');
     return {
       statusCode: 200,
       body: JSON.stringify(subscription),
