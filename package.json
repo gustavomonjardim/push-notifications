@@ -2,10 +2,13 @@
   "name": "push-notifications",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
-    "start": "servor . index.html 8080 --reload --browse",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "run-p start:**",
+    "start:server": "servor . index.html 8080 --reload --browse",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:lambda": "netlify-lambda serve src/functions",
+    "build": "netlify-lambda build src/functions"
   },
   "author": "Gustavo Monjardim",
   "license": "MIT",
@@ -16,6 +19,8 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-import-helpers": "^1.0.2",
     "eslint-plugin-prettier": "^3.1.3",
+    "netlify-lambda": "^1.6.3",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
     "servor": "^3.2.0"
   }
