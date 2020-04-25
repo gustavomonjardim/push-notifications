@@ -102,8 +102,13 @@ async function sendPushNotification() {
     },
     body: JSON.stringify(subscription),
   };
-  const response = await fetch('/.netlify/functions/push-service', config);
-  const data = await response.json();
 
-  console.log(data);
+  try {
+    const response = await fetch('/.netlify/functions/push-service', config);
+    const data = await response.json();
+
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
 }

@@ -11,6 +11,17 @@ webPush.setVapidDetails(
 );
 
 export async function handler(event) {
+  if (!process.env.PUBLIC_KEY || !process.env.PRIVATE_KEY) {
+    console.log(
+      'You must set the VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY environment variables. You can use the following ones:',
+      webPush.generateVAPIDKeys()
+    );
+    return {
+      statusCode: 500,
+      body: 'You must set the VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY environment variables',
+    };
+  }
+
   try {
     const subscription = JSON.parse(event.body);
 
