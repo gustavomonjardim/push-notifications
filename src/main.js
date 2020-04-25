@@ -1,34 +1,43 @@
 import { urlB64ToUint8Array } from './utils.js';
 
 const pushButton = document.querySelector('.push-button');
+const sendButton = document.querySelector('.send-button');
+const notificationContent = document.querySelector('.notification-content');
 
 const PUBLIC_KEY =
-  'BDw0pzvsRvUjhaCCxVJaIUlTfkZLBjeKAzMnz1m1It6gVoYhfMeQXggIM6pHqredieWHAh8mgenmVY-uM6O92GQ';
+  'BBbjYjIayKHSY4WQpQApYNLzuM4CtobiT-rYFPcRHqglL91yAq2PgaODn5MbtE0dCmGD7zQRfoaB4J6y0LytA9s';
 
 let isSubscribed = false;
 let swRegistration = null;
 let subscription = null;
 
+function handlePushButtonClick() {
+  pushButton.disabled = true;
+  if (isSubscribed) {
+    unsubscribeUser();
+  } else {
+    subscribeUser();
+  }
+}
+
 async function initializeUI() {
-  pushButton.addEventListener('click', () => {
-    pushButton.disabled = true;
-    if (isSubscribed) {
-      unsubscribeUser();
-    } else {
-      subscribeUser();
-    }
-  });
+  pushButton.addEventListener('click', handlePushButtonClick);
 
   subscription = await swRegistration.pushManager.getSubscription();
   isSubscribed = !(subscription === null);
-  updateBtn();
+  updateUI();
 }
 
-function updateBtn() {
+function updateUI() {
   if (isSubscribed) {
     pushButton.textContent = 'Disable Push Notifications';
     pushButton.classList.remove('positive');
     pushButton.classList.add('negative');
+
+    notificationContent.style.display = 'block';
+    sendButton.addEventListener('click', () => {
+      sendPushNotification();
+    });
   } else {
     pushButton.textContent = 'Enable Push Notifications';
     pushButton.classList.remove('negative');
@@ -49,7 +58,7 @@ async function subscribeUser() {
 
     console.log('User is subscribed: ', JSON.stringify(subscription));
     isSubscribed = true;
-    updateBtn();
+    updateUI();
   } catch (err) {
     console.log('Failed to subscribe the user: ', err);
   }
@@ -62,7 +71,7 @@ async function unsubscribeUser() {
     console.log('User is unsubscribed.');
     isSubscribed = false;
     subscription = null;
-    updateBtn();
+    updateUI();
   } catch (err) {
     console.log('Error unsubscribing', err);
   }
@@ -83,4 +92,18 @@ async function registerServiceWorker() {
 if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported');
   registerServiceWorker();
+}
+
+async function sendPushNotification() {
+  const config = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(subscription),
+  };
+  const response = await fetch('/.netlify/functions/push-service', config);
+  const data = await response.json();
+
+  console.log(data);
 }

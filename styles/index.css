@@ -70,3 +70,7 @@ button:focus {
 button:active {
   transform: translateY(0.2rem);
 }
+
+.notification-content {
+  display: none;
+}

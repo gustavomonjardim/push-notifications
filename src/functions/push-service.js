@@ -1,15 +1,34 @@
+const webPush = require('web-push');
+
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+if (!process.env.PUBLIC_KEY || !process.env.PRIVATE_KEY) {
+  console.log(
+    'You must set the VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY environment variables. You can use the following ones:',
+    webPush.generateVAPIDKeys()
+  );
+  return;
+}
+
+webPush.setVapidDetails(
+  'https://serviceworke.rs/',
+  process.env.PUBLIC_KEY,
+  process.env.PRIVATE_KEY
+);
+
 export async function handler(event) {
-  console.log(event);
   try {
-    const subject = event.queryStringParameters.name || 'World';
+    const subscription = JSON.parse(event.body);
+
+    await webPush.sendNotification(subscription);
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: `Hello ${subject}` }),
-      // // more keys you can return:
-      // headers: { "headerName": "headerValue", ... },
-      // isBase64Encoded: true,
+      body: JSON.stringify(subscription),
     };
   } catch (err) {
+    console.log(err);
     return { statusCode: 500, body: err.toString() };
   }
 }
