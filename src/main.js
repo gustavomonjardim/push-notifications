@@ -3,6 +3,7 @@ import { urlB64ToUint8Array } from './utils.js';
 const pushButton = document.querySelector('.push-button');
 const sendButton = document.querySelector('.send-button');
 const notificationContent = document.querySelector('.notification-content');
+const responseItem = document.querySelector('.response');
 
 const VAPID_PUBLIC_KEY =
   'BBbjYjIayKHSY4WQpQApYNLzuM4CtobiT-rYFPcRHqglL91yAq2PgaODn5MbtE0dCmGD7zQRfoaB4J6y0LytA9s';
@@ -42,6 +43,7 @@ function updateUI() {
     pushButton.textContent = 'Enable Push Notifications';
     pushButton.classList.remove('negative');
     pushButton.classList.add('positive');
+    notificationContent.style.display = 'none';
   }
 
   pushButton.disabled = false;
@@ -104,6 +106,8 @@ async function sendPushNotification() {
   try {
     const response = await fetch('/.netlify/functions/push-service', config);
     const data = await response.json();
+
+    responseItem.textContent = JSON.stringify(data);
 
     console.log(data);
   } catch (err) {

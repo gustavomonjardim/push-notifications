@@ -74,3 +74,10 @@ button:active {
 .notification-content {
   display: none;
 }
+
+pre {
+  margin: 20px 0;
+  white-space: pre-wrap;
+  background-color: #EEEEEE;
+  padding: 16px;
+}

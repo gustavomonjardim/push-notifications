@@ -25,10 +25,12 @@ export async function handler(event) {
   try {
     const subscription = JSON.parse(event.body);
 
-    await webPush.sendNotification(subscription, 'TESTE');
+    const res = await webPush.sendNotification(subscription, 'TESTE');
+    console.log(res);
+
     return {
       statusCode: 200,
-      body: JSON.stringify(subscription),
+      body: JSON.stringify({ data: { success: true } }),
     };
   } catch (err) {
     console.log(err);
