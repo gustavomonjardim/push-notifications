@@ -4,6 +4,8 @@ const pushButton = document.querySelector('.push-button');
 const sendButton = document.querySelector('.send-button');
 const notificationContent = document.querySelector('.notification-content');
 const responseItem = document.querySelector('.response');
+const titleInput = document.getElementById('title');
+const contentInput = document.getElementById('content');
 
 const VAPID_PUBLIC_KEY =
   'BBbjYjIayKHSY4WQpQApYNLzuM4CtobiT-rYFPcRHqglL91yAq2PgaODn5MbtE0dCmGD7zQRfoaB4J6y0LytA9s';
@@ -95,12 +97,24 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 }
 
 async function sendPushNotification() {
+  const title = titleInput.value;
+  const content = contentInput.value;
+
+  if (!title || !content) {
+    return;
+  }
+
+  const body = {
+    config: { title, content },
+    subscription: subscription,
+  };
+
   const config = {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify(subscription),
+    body: JSON.stringify(body),
   };
 
   try {

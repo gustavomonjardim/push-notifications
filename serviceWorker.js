@@ -2,9 +2,10 @@ self.addEventListener('push', (event) => {
   console.log('[Service Worker] Push Received.');
   console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
 
-  const title = 'My notification';
+  const { title, content } = JSON.parse(event.data.text());
+
   const options = {
-    body: event.data.text(),
+    body: content,
     vibrate: [200, 100, 200, 100, 200, 100, 200],
   };
 

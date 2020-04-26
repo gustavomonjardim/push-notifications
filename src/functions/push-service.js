@@ -23,9 +23,9 @@ export async function handler(event) {
   }
 
   try {
-    const subscription = JSON.parse(event.body);
+    const { subscription, config } = JSON.parse(event.body);
 
-    const res = await webPush.sendNotification(subscription, 'TESTE');
+    const res = await webPush.sendNotification(subscription, JSON.stringify(config));
     console.log(res);
 
     return {
