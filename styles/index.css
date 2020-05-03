@@ -101,6 +101,7 @@ button {
   color: var(--button);
   overflow: hidden;
   font-weight: 500;
+  cursor: pointer;
   
 }
 
