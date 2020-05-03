@@ -1,9 +1,10 @@
 import { urlB64ToUint8Array } from './utils.js';
 
-const pushButton = document.querySelector('.push-button');
+const pushCheckbox = document.querySelector('.enable-push');
+const fallback = document.querySelector('.fallback');
+
 const sendButton = document.querySelector('.send-button');
 const notificationContent = document.querySelector('.notification-content');
-const responseItem = document.querySelector('.response');
 const titleInput = document.getElementById('title');
 const contentInput = document.getElementById('content');
 
@@ -14,8 +15,8 @@ let isSubscribed = false;
 let swRegistration = null;
 let subscription = null;
 
-function handlePushButtonClick() {
-  pushButton.disabled = true;
+function toggleCheckbox() {
+  pushCheckbox.disabled = true;
   if (isSubscribed) {
     unsubscribeUser();
   } else {
@@ -24,7 +25,7 @@ function handlePushButtonClick() {
 }
 
 async function initializeUI() {
-  pushButton.addEventListener('click', handlePushButtonClick);
+  pushCheckbox.addEventListener('click', toggleCheckbox);
 
   subscription = await swRegistration.pushManager.getSubscription();
   isSubscribed = !(subscription === null);
@@ -33,22 +34,19 @@ async function initializeUI() {
 
 function updateUI() {
   if (isSubscribed) {
-    pushButton.textContent = 'Disable Push Notifications';
-    pushButton.classList.remove('positive');
-    pushButton.classList.add('negative');
-
+    pushCheckbox.checked = true;
+    fallback.style.display = 'none';
     notificationContent.style.display = 'block';
     sendButton.addEventListener('click', () => {
       sendPushNotification();
     });
   } else {
-    pushButton.textContent = 'Enable Push Notifications';
-    pushButton.classList.remove('negative');
-    pushButton.classList.add('positive');
+    pushCheckbox.checked = false;
+    fallback.style.display = 'flex';
     notificationContent.style.display = 'none';
   }
 
-  pushButton.disabled = false;
+  pushCheckbox.disabled = false;
 }
 
 async function subscribeUser() {
@@ -120,8 +118,6 @@ async function sendPushNotification() {
   try {
     const response = await fetch('/.netlify/functions/push-service', config);
     const data = await response.json();
-
-    responseItem.textContent = JSON.stringify(data);
 
     console.log(data);
   } catch (err) {

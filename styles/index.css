@@ -1,9 +1,9 @@
 :root {
-  --primary: #2781C4;
-  --secondary: #E13D88;
-  --positive: #49BC48;
-  --negative: #E0433C;
-  --warning: #E06C3D;
+  --bg: #011627;
+  --input: rgb(11, 37, 58);
+  --text: rgb(231, 231, 231);
+  --border: rgb(95, 126, 151);
+  --button: #0fdbe6;
 }
 
 html {
@@ -20,51 +20,140 @@ body {
   min-height: auto;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
+  background: linear-gradient(var(--bg) 30%, var(--input));
 }
 
 
 header {
-  padding: 2rem 0;
-  background-color: var(--primary);
+  padding: 6rem 0 2rem;
   text-align: center;
-  color: white;
 }
 
 header > h1 {
   padding: 0 1rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
+  color: var(--text);
+  font-weight: 300;
 }
 
 main {
+  display: flex;
+  flex-direction: column;
   padding: 0 16px;
   max-width: 760px;
   margin: 2.25rem auto;
+  box-shadow: 15px 15px 10px rgba(0 0 0 / 80%), -1px -1px 1px #000;
+  padding: 2.25rem;
+  border-radius: .5rem;
+  background-color: var(--bg);
+  min-height: 380px;
+
+}
+
+.checkbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkbox label {
+  color: var(--text);
+  font-size: 0.8rem;
+  margin-left: .8rem;
+}
+
+.button-container {
+  width: 100%;
+  text-align: end;
+}
+
+@media (max-width: 465px) {
+  .button-container {
+    text-align: center;
+  }
+}
+
+.fallback {
+  display: none;
+  padding: 4rem 1rem;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-grow: 1;
+}
+
+.fallback p {
+  color: var(--text);
+  opacity: .8;
 }
 
 button {
+  position: relative;
   padding: 0px 22px;
-  height: 40px;
+  height: 44px;
   border-radius: 3px;
-  color: #FFF;
-  background-color: var(--primary);
   text-transform: uppercase;
+  letter-spacing: 0.2rem;
   border: none;
   font-size: 14px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+  background-color: transparent;
+  color: var(--button);
+  overflow: hidden;
+  font-weight: 500;
+  
 }
 
-button.positive {
-  background-color: var(--positive);
-}
-
-
-button.negative {
-  background-color: var(--negative);
-}
-
-button:focus {
+button:focus, button:hover {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+  color: #FFF;
+  background-color: var(--button);
+  box-shadow: 0 0px 5px var(--button), 0 0px 20px var(--button), 0 0px 40px var(--button);
+  text-shadow: 0 0 5px rgba(0,0,0,.1);
+}
+
+button span {
+  position: absolute;
+  display: block;
+}
+
+button span:nth-child(1) {
+  width: 100%;
+  height: 2px;
+  left: -100%;
+  top: 0;
+  background: linear-gradient(90deg, transparent, var(--button));
+  animation: button-line1 1s linear infinite;
+}
+
+button span:nth-child(2) {
+  width: 2px;
+  height: 100%;
+  right: 0;
+  top: -100%;
+  background: linear-gradient(180deg, transparent, var(--button));
+  animation: button-line2 1s linear infinite;
+  animation-delay: .5s;
+}
+
+button span:nth-child(3) {
+  width: 100%;
+  height: 2px;
+  right: -100%;
+  bottom: 0;
+  background: linear-gradient(270deg, transparent, var(--button));
+  animation: button-line3 1s linear infinite;
+  animation-delay: 1s;
+}
+
+button span:nth-child(4) {
+  width: 2px;
+  height: 100%;
+  left: 0;
+  bottom: -100%;
+  background: linear-gradient(0deg, transparent, var(--button));
+  animation: button-line4 1s linear infinite;
+  animation-delay: 1.5s;
 }
 
 button:active {
@@ -75,31 +164,92 @@ button:active {
   display: none;
 }
 
-pre {
-  margin: 1.25rem 0;
-  white-space: pre-wrap;
-  background-color: #EEEEEE;
-  padding: 1rem;
-  border: 0.25rem;
-  min-height: 100px;
-}
 
-.text-field {
+.textfield {
   margin: 2.5rem 0;
 }
 
-label {
+.textfield label {
   display: block;
   margin-bottom: 0.25rem;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #718096;
+  color: var(--text);
 }
 
-input {
+
+.textfield input:focus {
+  outline: none;
+ border-color: var(--button);
+}
+
+.textfield input {
   width: 100%;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  border: 1px solid #718096;
+  border: 1px solid var(--border);
   border-radius: 0.25rem;
+  background-color: var(--input);
+  color: var(--text);
+}
+
+::placeholder {
+  color:var(--text);
+  opacity: 0.7;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+}
+
+footer p {
+  color: var(--text);
+  font-size: .8rem;
+  opacity: .6;
+}
+
+footer span {
+  font-weight: 700;
+}
+
+footer a {
+  color: var(--text);
+}
+
+
+@keyframes button-line1 {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes button-line2 {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes button-line3 {
+  0% {
+    right: -100%;
+  }
+  100% {
+    right: 100%;
+  }
+}
+
+@keyframes button-line4 {
+  0% {
+    bottom: -100%;
+  }
+  100% {
+    bottom: 100%;
+  }
 }

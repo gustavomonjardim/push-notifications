@@ -18,24 +18,43 @@
   </header>
 
   <main>
-    <button class="push-button">
-      Enable Push Notifications
-    </button>
+    <div class="checkbox">
+      <input type="checkbox" id="enable-push" name="enable-push" class="enable-push">
+      <label for="enable-push">Enable Push Notifications</label>
+    </div>
+
+    <div class="fallback">
+      <p>
+        Click the checkbox to enable push notifications from this website.
+      </p>
+    </div>
+
     <div class="notification-content">
-      <div class="text-field">
+      <div class="textfield">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" placeholder="Title">
       </div>
-      <div class="text-field">
+
+      <div class="textfield">
         <label for="content">Content</label>
         <input type="text" id="content" name="content" placeholder="Content">
       </div>
-      <button class="send-button">
-        Send Push Notifications
-      </button>
-      <pre><code class="response"></code></pre>
+
+      <div class="button-container">
+        <button class="send-button">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Send Notification
+        </button>
+      </div>
     </div>
   </main>
+
+  <footer>
+    <p>Made by <span>Gustavo Monjardim</span>. <a target="_blank" href="http://github.com/gustavomonjardim/push-notifications">Source code.</a></p>
+  </footer>
 
   <script src="src/main.js" type="module"></script>
 
