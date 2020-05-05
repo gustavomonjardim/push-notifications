@@ -1,7 +1,9 @@
 import { urlB64ToUint8Array } from './utils.js';
 
+const mainSection = document.querySelector('.main-section');
 const pushCheckbox = document.querySelector('.enable-push');
 const fallback = document.querySelector('.fallback');
+const denied = document.querySelector('.denied');
 
 const sendButton = document.querySelector('.send-button');
 const notificationContent = document.querySelector('.notification-content');
@@ -15,12 +17,32 @@ let isSubscribed = false;
 let swRegistration = null;
 let subscription = null;
 
+function askPermission() {
+  return new Promise(function (resolve, reject) {
+    const permissionResult = Notification.requestPermission(function (result) {
+      resolve(result);
+    });
+
+    if (permissionResult) {
+      permissionResult.then(resolve, reject);
+    }
+  }).then(function (permissionResult) {
+    if (permissionResult !== 'granted') {
+      mainSection.style.display = 'none';
+      denied.style.display = 'block';
+    } else {
+      mainSection.style.display = 'block';
+      denied.style.display = 'none';
+      subscribeUser();
+    }
+  });
+}
+
 function toggleCheckbox() {
-  pushCheckbox.disabled = true;
   if (isSubscribed) {
     unsubscribeUser();
   } else {
-    subscribeUser();
+    askPermission();
   }
 }
 
@@ -42,11 +64,9 @@ function updateUI() {
     });
   } else {
     pushCheckbox.checked = false;
-    fallback.style.display = 'flex';
+    fallback.style.display = 'block';
     notificationContent.style.display = 'none';
   }
-
-  pushCheckbox.disabled = false;
 }
 
 async function subscribeUser() {
@@ -60,6 +80,8 @@ async function subscribeUser() {
     isSubscribed = true;
     updateUI();
   } catch (err) {
+    isSubscribed = false;
+
     console.log('Failed to subscribe the user: ', err);
   }
 }
@@ -83,6 +105,12 @@ async function registerServiceWorker() {
 
     console.log('Service Worker is registered', swReg);
     swRegistration = swReg;
+
+    if (Notification.permission === 'denied') {
+      mainSection.style.display = 'none';
+      denied.style.display = 'block';
+    }
+
     initializeUI();
   } catch (err) {
     console.error('Service Worker Error', err);

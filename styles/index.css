@@ -1,7 +1,7 @@
 :root {
   --bg: #011627;
   --input: rgb(11, 37, 58);
-  --text: rgb(231, 231, 231);
+  --text: rgb(209, 224, 230);
   --border: rgb(95, 126, 151);
   --button: #0fdbe6;
 }
@@ -74,16 +74,17 @@ main {
   }
 }
 
-.fallback {
+.fallback, .denied {
   display: none;
   padding: 4rem 1rem;
-  align-items: center;
-  justify-content: center;
   height: 100%;
+  width: 100%;
+  text-align: center;
   flex-grow: 1;
+  vertical-align: middle;
 }
 
-.fallback p {
+.fallback p, .denied p {
   color: var(--text);
   opacity: .8;
 }
@@ -207,7 +208,8 @@ footer {
 footer p {
   color: var(--text);
   font-size: .8rem;
-  opacity: .6;
+  opacity: .7;
+  letter-spacing: 0.02rem;
 }
 
 footer span {

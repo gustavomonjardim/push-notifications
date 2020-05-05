@@ -18,42 +18,55 @@
   </header>
 
   <main>
-    <div class="checkbox">
-      <input type="checkbox" id="enable-push" name="enable-push" class="enable-push">
-      <label for="enable-push">Enable Push Notifications</label>
-    </div>
 
-    <div class="fallback">
+    <div class="denied">
       <p>
-        Click the checkbox to enable push notifications from this website.
+        Looks like you blocked push notifications from this website :(
       </p>
     </div>
 
-    <div class="notification-content">
-      <div class="textfield">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title" placeholder="Title">
+    <div class="main-section">
+      <div class="checkbox">
+        <input type="checkbox" id="enable-push" name="enable-push" class="enable-push">
+        <label for="enable-push">Enable Push Notifications</label>
       </div>
 
-      <div class="textfield">
-        <label for="content">Content</label>
-        <input type="text" id="content" name="content" placeholder="Content">
+
+      <div class="fallback">
+        <p>
+          Click the checkbox to enable push notifications from this website.
+        </p>
       </div>
 
-      <div class="button-container">
-        <button class="send-button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          Send Notification
-        </button>
+      <div class="notification-content">
+        <div class="textfield">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" placeholder="Title">
+        </div>
+
+        <div class="textfield">
+          <label for="content">Content</label>
+          <input type="text" id="content" name="content" placeholder="Content">
+        </div>
+
+        <div class="button-container">
+          <button class="send-button">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Send Notification
+          </button>
+        </div>
       </div>
     </div>
+
+
   </main>
 
   <footer>
-    <p>Made by <span>Gustavo Monjardim</span>. <a target="_blank" href="http://github.com/gustavomonjardim/push-notifications">Source code.</a></p>
+    <p>Made by <span>Gustavo Monjardim</span>. <a target="_blank"
+        href="http://github.com/gustavomonjardim/push-notifications">Source code.</a></p>
   </footer>
 
   <script src="src/main.js" type="module"></script>
