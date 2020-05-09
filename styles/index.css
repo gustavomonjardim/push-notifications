@@ -82,6 +82,9 @@ main {
   text-align: center;
   flex-grow: 1;
   vertical-align: middle;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: reveal 0.5s ease forwards;
 }
 
 .fallback p, .denied p {
@@ -164,6 +167,9 @@ button:active {
 
 .notification-content {
   display: none;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: reveal 0.5s ease forwards;
 }
 
 
@@ -254,5 +260,12 @@ footer a {
   }
   100% {
     bottom: 100%;
+  }
+}
+
+@keyframes reveal {
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
